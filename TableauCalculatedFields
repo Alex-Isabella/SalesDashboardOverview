@@ -1,0 +1,86 @@
+Custom calculated fields used for Tableau Dashboard Link in ReadMe
+
+Avg Profit Overall
+{FIXED : AVG(IF YEAR([Order Date])={MAX(YEAR([Order Date]))} THEN [Total CY Profit] END)}
+
+Avg Profit per State
+{FIXED [State/Province]: AVG([Total CY Profit])}
+
+Avg Sales Overall
+{FIXED : AVG(IF YEAR([Order Date])={MAX(YEAR([Order Date]))} THEN [Total CY Sales] END)}
+
+Avg Sales per State
+{FIXED [State/Province]: AVG([Total CY Sales])}
+
+Dynamic Measure
+CASE [Select Measure]
+WHEN 'Total CY Sales' THEN [Total CY Sales]
+WHEN 'Total CY Profit' THEN [Total CY Profit]
+WHEN 'Total CY Qty' THEN [Total CY Qty]
+END
+
+Min Max Month
+IF SUM([Total CY Sales])=WINDOW_MAX(SUM([Total CY Sales])) THEN SUM([Total CY Sales]) 
+ELSEIF SUM([Total CY Sales])=WINDOW_MIN(SUM([Total CY Sales])) THEN SUM([Total CY Sales])
+ELSE NULL
+END
+
+Min Max Profit
+IF SUM([Total CY Profit])=WINDOW_MAX(SUM([Total CY Profit])) THEN SUM([Total CY Profit]) 
+ELSEIF SUM([Total CY Profit])=WINDOW_MIN(SUM([Total CY Profit])) THEN SUM([Total CY Profit])
+ELSE NULL
+END
+
+Min Max Qty
+IF SUM([Total CY Qty])=WINDOW_MAX(SUM([Total CY Qty])) THEN SUM([Total CY Qty]) 
+ELSEIF SUM([Total CY Qty])=WINDOW_MIN(SUM([Total CY Qty])) THEN SUM([Total CY Qty])
+ELSE NULL
+END
+
+Total CY Profit
+IF YEAR([Order Date]) = {MAX(YEAR([Order Date]))} THEN [Profit] END
+
+Total CY Qty
+IF YEAR([Order Date]) = {MAX(YEAR([Order Date]))} THEN [Quantity] END
+
+Total CY Sales
+IF YEAR([Order Date]) = {MAX(YEAR([Order Date]))} THEN [Sales] END
+
+Total PY Profit
+IF YEAR([Order Date]) = {MAX(YEAR([Order Date]))}-1 THEN [Profit] END
+
+Total PY Qty
+IF YEAR([Order Date]) = {MAX(YEAR([Order Date]))}-1 THEN [Quantity] END
+
+Total PY Sales
+IF YEAR([Order Date]) = {MAX(YEAR([Order Date]))}-1 THEN [Sales]END
+
+YOY Profit
+(SUM([Total CY Profit])-SUM([Total PY Profit]))/SUM([Total PY Profit])
+
+YOY Profit Indicator 
+IF [YOY Profit] > 0 THEN "▲" ELSE "▼" END
+
+YOY Qty
+(SUM([Total CY Qty])-SUM([Total PY Qty]))/SUM([Total PY Qty])
+
+YOY QTY Indicator
+IF [YOY Qty] > 0 THEN "▲" ELSE "▼" END
+
+YOY Sales
+(SUM([Total CY Sales])-SUM([Total PY Sales]))/SUM([Total PY Sales])
+
+YOY Sales Indicator
+IF [YOY Sales] > 0 THEN "▲" ELSE "▼" END
+
+Profit Avg Color
+IF [Avg Profit per State]<[Avg Profit Overall] THEN 'Below Average'
+ELSEIF [Avg Profit per State]>[Avg Profit Overall] THEN 'Above Average'
+ELSEIF [Avg Profit per State]=[Avg Profit Overall] THEN 'Equal to Average'
+END
+
+Sales Avg Color
+IF [Avg Sales per State]<[Avg Sales Overall] THEN 'Below Average'
+ELSEIF [Avg Sales per State]>[Avg Sales Overall] THEN 'Above Average'
+ELSEIF [Avg Sales per State]=[Avg Sales Overall] THEN 'Equal to Average'
+END
