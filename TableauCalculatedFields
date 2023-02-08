@@ -1,4 +1,5 @@
-Custom calculated fields used for Tableau Dashboard Link in ReadMe
+Custom calculated fields used for Tableau Dashboard 
+Link to the dashboard is in the ReadMe
 
 Avg Profit Overall
 {FIXED : AVG(IF YEAR([Order Date])={MAX(YEAR([Order Date]))} THEN [Total CY Profit] END)}
